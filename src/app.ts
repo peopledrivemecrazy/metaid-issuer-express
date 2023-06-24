@@ -3,7 +3,7 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cors());
-import { Contract, ContractMethod, getAddress, isAddress } from "ethers";
+import { isAddress } from "ethers";
 const port = process.env.PORT || 3000;
 import { ethers } from "ethers";
 
