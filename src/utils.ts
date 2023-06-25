@@ -1,5 +1,10 @@
 import { ethers } from "ethers";
-import { contractAddress, privateKey, rcpProvider } from "./constants";
+import {
+	contractAddress,
+	metaCertcontractAddress,
+	privateKey,
+	rcpProvider,
+} from "./constants";
 import { abi as metaIDABI } from "./MetaID.json";
 import { abi as metaCertABI } from "./MetaCert.json";
 
@@ -22,14 +27,14 @@ export const mintNft = async (address: string) => {
 };
 
 export const mintPoap = async (address: string, courseId: number) => {
-	const contract = CONTRACT(contractAddress, metaCertABI, provider);
+	const contract = CONTRACT(metaCertcontractAddress, metaCertABI, provider);
 	const contractSigner: any = contract.connect(signer);
 	const tx = await contractSigner.mintCert(address, courseId);
 	return tx;
 };
 
 export const addCourse = async (courseId: number) => {
-	const contract = CONTRACT(contractAddress, metaCertABI, provider);
+	const contract = CONTRACT(metaCertcontractAddress, metaCertABI, provider);
 	const contractSigner: any = contract.connect(signer);
 	const tx = await contractSigner.addNewCourse(courseId);
 	return tx;
