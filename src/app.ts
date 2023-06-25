@@ -5,22 +5,14 @@ app.use(express.json());
 app.use(cors());
 import { isAddress } from "ethers";
 const port = process.env.PORT || 3000;
-import { ethers } from "ethers";
 
-import { contractAddress, privateKey, rcpProvider } from "./constants";
-import { abi } from "./MetaID.json";
-import { getOwner, mintNft } from "./utils";
-
-const provider = new ethers.JsonRpcProvider(rcpProvider);
-const signer = new ethers.Wallet(privateKey, provider);
-const CONTRACT = (address: string, abi: any, prov: any) =>
-	new ethers.Contract(address, abi, prov);
+import { addCourse, getOwner, mintNft, mintPoap } from "./utils";
 
 app.get("/", (req, res) => {
 	res.send("ok");
 });
 
-app.post("/issue", async (req, res) => {
+app.post("/issue/id", async (req, res) => {
 	const { address } = req.body;
 	console.log(isAddress(address));
 	if (isAddress(address)) {
@@ -29,6 +21,23 @@ app.post("/issue", async (req, res) => {
 	} else {
 		res.json({ address: "error" });
 	}
+});
+
+app.post("/issue/cert", async (req, res) => {
+	// TODO: only compute the TBA here.
+	const { address, courseId } = req.body;
+	console.log(isAddress(address));
+	if (isAddress(address)) {
+		const tx = await mintPoap(address, courseId);
+		res.send({ address, tx });
+	} else {
+		res.json({ address: "error" });
+	}
+});
+app.post("/addtest", async (req, res) => {
+	const { id } = req.body;
+	const tx = await addCourse(id);
+	res.json({ tx });
 });
 
 app.get("/nft/:id", async (req, res) => {
