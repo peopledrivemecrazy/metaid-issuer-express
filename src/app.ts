@@ -26,7 +26,7 @@ app.post("/issue/id", async (req, res) => {
 app.post("/issue/cert", async (req, res) => {
 	// TODO: only compute the TBA here.
 	const { address, courseId } = req.body;
-	console.log(isAddress(address));
+	console.log(isAddress(address), address, courseId);
 	if (isAddress(address)) {
 		const tx = await mintPoap(address, courseId);
 		res.send({ address, tx });
@@ -36,6 +36,7 @@ app.post("/issue/cert", async (req, res) => {
 });
 app.post("/addtest", async (req, res) => {
 	const { id } = req.body;
+	console.log({ id });
 	const tx = await addCourse(id);
 	res.json({ tx });
 });
